@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prescription Junkie — My Pharmacy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./detail-pages.css">
+  <link rel="icon" href="./logo-icon.png" type="image/png">
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo-icon">
+      <img src="./images/logo-icon.png" alt="Prescription Junkie icon">
+    </a>
+    <p class="auth-links">
+      <a href="member-home.html">Account Home</a>
+    </p>
+  </header>
+
+  <nav class="detail-navbar">
+    <ul class="detail-pill-list">
+      <li><a href="member-home.html" class="pill pill-blue-light">Home</a></li>
+      <li><a href="my-pharmacy.html" class="pill pill-blue-light">My Pharmacy</a></li>
+      <li><a href="pharm-search.html" class="pill pill-blue-light">Pharmacy Search</a></li>
+      <li><a href="about.html" class="pill pill-blue-light">About</a></li>
+      <li><a href="https://steelhacks.org/" target="_blank" class="pill pill-blue">SteelHacks XIII</a></li>
+    </ul>
+  </nav>
+
+  <div class="detail-wrap">
+    <section class="detail-card accent-pink">
+      <h1>PHARMACY DETAILS</h1>
+
+      <input id="pharmacyField" class="detail-input" readonly>
+
+      <div class="detail-row">
+        <div class="detail-box">
+          <p style="font-weight:bold; color:var(--scheme-brown); margin-bottom:10px;">Current Prescription List</p>
+          <ul id="rxList" style="cursor:default;"></ul>
+        </div>
+
+        <div class="nearby-box">
+          <div class="attr-circles" id="attrCircles"></div>
+          <button class="pill" style="background: var(--scheme-pink);" onclick="findPharmacy()">Find Pharmacy</button>
+          <p class="status-msg" id="statusMsg"></p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="./data.js"></script>
+  <script>
+    const user = getCurrentUser();
+
+    function renderPharmacy() {
+      const name = getCurrentPharmacyName(user.id);
+      const pharmacy = findPharmacyByName(name);
+      const address = pharmacy ? pharmacy.address : "Address on file";
+      document.getElementById('pharmacyField').value = `${name} (${address})`;
+      renderAttributes(pharmacy || { name, chain: 0 });
+    }
+
+    function renderRxList() {
+      const rxList = getPrescriptionsForUser(user.id);
+      const el = document.getElementById('rxList');
+      el.innerHTML = rxList.length
+        ? rxList.map(rx => `<li>${rx.name} — ${rx.dose}</li>`).join('')
+        : '<li>No prescriptions on file.</li>';
+    }
+
+    function renderAttributes(pharmacy) {
+      const attrs = computePharmacyAttributes(pharmacy);
+      const el = document.getElementById('attrCircles');
+      el.innerHTML = attrs.map(a =>
+        `<div class="attr-circle">${a.label}<span class="score">${a.score}/5</span></div>`
+      ).join('');
+    }
+
+    function findPharmacy() {
+      const statusEl = document.getElementById('statusMsg');
+      const candidates = getNearbyPharmacies(user.id, 5);
+      if (!candidates.length) {
+        statusEl.textContent = "No other pharmacies available.";
+        return;
+      }
+      const pick = candidates[Math.floor(Math.random() * candidates.length)];
+      const ok = confirm(`Switch your pharmacy to ${pick.name} (${pick.address})?`);
+      if (!ok) return;
+
+      const result = switchCurrentPharmacy(user.id, pick.name);
+      statusEl.textContent = `Switched from ${result.oldCurrent} to ${result.newCurrent}.`;
+      renderPharmacy();
+    }
+
+    renderPharmacy();
+    renderRxList();
+  </script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prescription Junkie — My Prescriptions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./detail-pages.css">
+  <link rel="icon" href="./logo-icon.png" type="image/png">
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo-icon">
+      <img src="./images/logo-icon.png" alt="Prescription Junkie icon">
+    </a>
+    <p class="auth-links">
+      <a href="member-home.html">Account Home</a>
+    </p>
+  </header>
+
+  <nav class="detail-navbar">
+    <ul class="detail-pill-list">
+      <li><a href="member-home.html" class="pill pill-blue-light">Home</a></li>
+      <li><a href="my-pharmacy.html" class="pill pill-blue-light">My Pharmacy</a></li>
+      <li><a href="pharm-search.html" class="pill pill-blue-light">Pharmacy Search</a></li>
+      <li><a href="about.html" class="pill pill-blue-light">About</a></li>
+      <li><a href="https://steelhacks.org/" target="_blank" class="pill pill-blue">SteelHacks XIII</a></li>
+    </ul>
+  </nav>
+
+  <div class="detail-wrap">
+    <section class="detail-card">
+      <h1>PRESCRIPTION DETAILS</h1>
+
+      <div class="detail-row" style="margin-top:0;">
+        <select id="rxSelect" class="detail-input" style="flex:1 1 260px;" onchange="renderSelectedRx()"></select>
+        <button class="pill pill-blue" onclick="promptAddPrescription()">Add New Prescription</button>
+      </div>
+
+      <div class="detail-row">
+        <div class="detail-box">
+          <dl>
+            <dt>Prescription Name</dt><dd id="rxName">—</dd>
+            <dt>Prescription ID</dt><dd id="rxId">—</dd>
+            <dt>Dosage</dt><dd id="rxDose">—</dd>
+            <dt>Last Date Filled</dt><dd id="rxLastFilled">—</dd>
+          </dl>
+        </div>
+
+        <div class="nearby-box">
+          <input id="currentPharmacyField" class="detail-input" readonly>
+
+          <div class="detail-box" style="width:100%;">
+            <p style="font-weight:bold; color:var(--scheme-brown); margin-bottom:10px;">Other Pharmacies Nearby</p>
+            <ul id="nearbyList"></ul>
+          </div>
+
+          <button class="pill pill-blue" style="margin: 0 auto;" onclick="doTransfer()">Transfer Prescription</button>
+          <p class="status-msg" id="statusMsg"></p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="./data.js"></script>
+  <script>
+    const user = getCurrentUser();
+    let selectedPharmacy = null;
+
+    function populateRxDropdown() {
+      const rxList = getPrescriptionsForUser(user.id);
+      const select = document.getElementById('rxSelect');
+      select.innerHTML = rxList.map(rx => `<option value="${rx.id}">${rx.name}</option>`).join('');
+    }
+
+    function renderSelectedRx() {
+      const rxList = getPrescriptionsForUser(user.id);
+      const id = document.getElementById('rxSelect').value;
+      const rx = rxList.find(r => r.id === id) || rxList[0];
+      if (!rx) return;
+      document.getElementById('rxName').textContent = rx.name;
+      document.getElementById('rxId').textContent = rx.id;
+      document.getElementById('rxDose').textContent = rx.dose;
+      document.getElementById('rxLastFilled').textContent = rx.lastFilled;
+    }
+
+    function renderCurrentPharmacy() {
+      document.getElementById('currentPharmacyField').value =
+        "Current Pharmacy: " + getCurrentPharmacyName(user.id);
+    }
+
+    function renderNearby() {
+      const nearby = getNearbyPharmacies(user.id, 3);
+      const list = document.getElementById('nearbyList');
+      list.innerHTML = nearby.map(p =>
+        `<li data-name="${p.name}" onclick="selectPharmacy(this)">${p.name} — ${p.address}</li>`
+      ).join('');
+      selectedPharmacy = null;
+    }
+
+    function selectPharmacy(el) {
+      document.querySelectorAll('#nearbyList li').forEach(li => li.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedPharmacy = el.dataset.name;
+    }
+
+    function doTransfer() {
+      const statusEl = document.getElementById('statusMsg');
+      const rxId = document.getElementById('rxSelect').value;
+
+      if (!selectedPharmacy) {
+        statusEl.textContent = "Pick a pharmacy from the list first.";
+        return;
+      }
+
+      const result = transferPrescription(user.id, rxId, selectedPharmacy);
+      statusEl.textContent = `Transferred from ${result.oldCurrent} to ${result.newCurrent}.`;
+      renderCurrentPharmacy();
+      renderNearby();
+    }
+
+    function promptAddPrescription() {
+      const name = prompt("New prescription name:");
+      if (!name) return;
+      addPrescriptionVisual(user.id, name);
+      populateRxDropdown();
+      renderSelectedRx();
+    }
+
+    populateRxDropdown();
+    renderSelectedRx();
+    renderCurrentPharmacy();
+    renderNearby();
+  </script>
+</body>
+</html>

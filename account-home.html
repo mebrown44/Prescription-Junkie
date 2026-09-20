@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prescription Junkie — Account Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./detail-pages.css">
+  <link rel="icon" href="./logo-icon.png" type="image/png">
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo-icon">
+      <img src="./images/logo-icon.png" alt="Prescription Junkie icon">
+    </a>
+    <p class="auth-links">
+      <a href="member-home.html">Account Home</a>
+    </p>
+  </header>
+
+  <nav class="detail-navbar">
+    <ul class="detail-pill-list">
+      <li><a href="member-home.html" class="pill pill-blue-light">Home</a></li>
+      <li><a href="my-pharmacy.html" class="pill pill-blue-light">My Pharmacy</a></li>
+      <li><a href="pharm-search.html" class="pill pill-blue-light">Pharmacy Search</a></li>
+      <li><a href="about.html" class="pill pill-blue-light">About</a></li>
+      <li><a href="https://steelhacks.org/" target="_blank" class="pill pill-blue">SteelHacks XIII</a></li>
+    </ul>
+  </nav>
+
+  <div class="detail-wrap">
+    <section class="detail-card">
+      <h1>Account Home</h1>
+
+      <div class="account-grid">
+        <div class="detail-box">
+          <dl>
+            <dt>Name</dt><dd id="acctName">—</dd>
+            <dt>Username</dt><dd id="acctUsername">—</dd>
+            <dt>Email</dt><dd id="acctEmail">—</dd>
+            <dt>Phone Number</dt><dd id="acctPhone">—</dd>
+          </dl>
+        </div>
+
+        <div class="detail-box" style="flex:1 1 320px;">
+          <p style="font-weight:bold; color:var(--scheme-brown); margin-bottom:10px;">Preferences</p>
+          <ul class="pref-checklist" id="prefList"></ul>
+        </div>
+      </div>
+
+      <div class="account-links">
+        <a href="my-prescriptions.html" class="pill pill-blue">Prescriptions</a>
+        <a href="my-pharmacy.html" class="pill" style="background: var(--scheme-pink);">Pharmacy</a>
+      </div>
+    </section>
+  </div>
+
+  <script src="./data.js"></script>
+  <script>
+    const user = getCurrentUser();
+    const prefs = getPreferences(user.id);
+
+    document.getElementById('acctName').textContent = user.name;
+    document.getElementById('acctUsername').textContent = user.username;
+    document.getElementById('acctEmail').textContent = user.email;
+    document.getElementById('acctPhone').textContent = user.phone;
+
+    // A preference "counts" as on if its score is 3 or higher (out of 5).
+    document.getElementById('prefList').innerHTML = PREF_LABELS.map((label, i) => {
+      const score = prefs.values[i] ?? 0;
+      const checked = score >= 3 ? 'checked' : '';
+      return `<li><input type="checkbox" ${checked} disabled> ${label} (${score}/5)</li>`;
+    }).join('');
+  </script>
+</body>
+</html>

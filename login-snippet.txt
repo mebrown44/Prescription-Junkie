@@ -1,0 +1,14 @@
+In index.html, inside handleLogin(), add one line before the redirect:
+
+    if (match) {
+      errorEl.textContent = '';
+      sessionStorage.setItem('loggedInUserId', match.id);   // <-- add this line
+      window.location.href = 'member-home.html';
+    } else {
+      errorEl.textContent = 'Incorrect username or password.';
+    }
+
+That's it — every page that loads data.js will now know which of the
+5 users is logged in via getCurrentUser(). If someone opens one of the
+account pages directly (skipping login), it defaults to user 001 so
+you can still demo/test each page standalone.
