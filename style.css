@@ -1,1 +1,340 @@
+/* Globals */
+:root {
+  --scheme-brown: #3c200e;
+  --scheme-pink: #f7b5ee;
+  --scheme-blue: #8dbbe5;
+  --scheme-offwhite: #fffaf6;
+  --text-box-color: #fffcfa;
+}
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #fffaf6;
+}
+
+/* Header (shared) */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--scheme-blue);
+  padding: 12px 24px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-icon img {
+  height: 40px;
+  display: block;
+}
+
+/* ============================= */
+/* LEGACY navbar — "Prescription Vacation" page only */
+/* ============================= */
+.navbar {
+  position: sticky;
+  top: 44px;
+  z-index: 99;
+  background: #cfe4f7;
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.legacy-pill-list {
+  background: rgb(141 187 229 / 60%);
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 8px 20px;
+}
+
+.std-menu {
+  display: flex;
+  list-style: none;
+  gap: 24px;
+}
+
+.std-menu .menu-item a {
+  color: #1a2e4a;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.sh-button {
+  background: #7fb3e0;
+  color: #1a2e4a;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* ============================= */
+/* index.html — hero section */
+/* ============================= */
+.hero {
+  position: relative;
+  text-align: center;
+  padding: 0 0 60px;
+  overflow: hidden;
+}
+
+.hero-logo {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin: 0 auto;
+  display: block;
+}
+
+.hero-nav {
+  position: relative;
+  z-index: 1;
+  margin-top: 24px;
+}
+
+.hero-pill-list {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hero-logo,
+.hero-nav,
+.info-section {
+  position: relative;
+  z-index: 1;
+}
+
+/* Shared pill button styling (used across pages) */
+.pill {
+  display: inline-block;
+  padding: 10px 24px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--scheme-brown);
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.pill-pink {
+  background: var(--scheme-pink);
+}
+
+.pill-blue {
+  background: var(--scheme-blue);
+  font-weight: 700;
+}
+
+.pill-offwhite {
+  background: var(--scheme-offwhite);
+  color: var(--scheme-brown);
+}
+
+/* Content sections */
+.info-section {
+  max-width: 700px;
+  margin: 48px auto 0;
+  text-align: center;
+}
+
+.info-section h2 {
+  color: var(--scheme-brown);
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.info-section p {
+  color: var(--scheme-brown);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+/* ============================= */
+/* Log In modal (shared, any page) */
+/* ============================= */
+#loginModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-card {
+  background: var(--scheme-pink);
+  border-radius: 24px;
+  padding: 16px;
+  width: 320px;
+}
+
+.modal-title,
+.modal-body {
+  background: var(--scheme-offwhite);
+  border-radius: 16px;
+}
+
+.modal-title {
+  padding: 20px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+  color: var(--scheme-brown);
+  margin-bottom: 12px;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-body label {
+  display: block;
+  font-weight: bold;
+  color: var(--scheme-brown);
+  margin-bottom: 6px;
+}
+
+.modal-body input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+  border: 1px solid var(--scheme-brown);
+  border-radius: 4px;
+  background: var(--text-box-color);
+  box-sizing: border-box;
+}
+
+.modal-submit {
+  background: var(--scheme-offwhite);
+  display: block;
+  margin: 0 auto;
+}
+
+.login-error {
+  color: #b00020;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: -8px;
+  min-height: 18px;
+}
+
+.login-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-weight: bold;
+  color: var(--scheme-brown);
+  cursor: pointer;
+}
+
+.auth-links {
+  color: var(--scheme-brown);
+  font-weight: bold;
+}
+
+.auth-links a {
+  color: var(--scheme-brown);
+  text-decoration: none;
+}
+
+/* ============================= */
+/* member-home.html — dashboard */
+/* ============================= */
+.dashboard-navbar {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+  background: var(--scheme-offwhite);
+}
+
+.dashboard-pill-list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #cfe4f7;
+  border-radius: 30px;
+  padding: 10px 20px;
+  flex-wrap: wrap;
+}
+
+.pill-blue-light {
+  background: transparent;
+  color: var(--scheme-brown);
+  font-weight: 500;
+}
+
+.pill-blue-light:hover {
+  background: rgba(141, 187, 229, 0.4);
+}
+
+.dashboard {
+  padding: 32px 24px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.pref-card {
+  border-radius: 24px;
+  padding: 32px 40px;
+  max-width: 900px;
+}
+
+.pref-card-blue {
+  background: var(--scheme-blue);
+  align-self: flex-start;
+}
+
+.pref-card-pink {
+  background: var(--scheme-pink);
+  align-self: flex-end;
+}
+
+.pref-card h2 {
+  text-align: center;
+  color: var(--scheme-brown);
+  font-weight: 400;
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+
+.pref-card h2 strong {
+  font-weight: 700;
+}
+
+.pref-card p {
+  color: var(--scheme-brown);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.pref-card-buttons {
+  display: flex;
+  gap: 16px;
+}

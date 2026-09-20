@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prescription Junkie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="icon" href="./logo-icon.png" type="image/png">
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo-icon">
+      <img src="./images/logo-icon.png" alt="Prescription Junkie icon">
+    </a>
+    <p class="auth-links">
+      <button class="login-button" onclick="document.getElementById('loginModal').style.display='flex'">Login</button> // <a href="member-home.html">Sign Up</a>
+    </p>
+  </header>
+
+  <main class="hero">
+    <img src="./images/squiggle-with-logo.png" alt="Prescription Junkie logo" class="hero-logo" width="100%">
+
+    <nav class="hero-nav">
+      <ul class="hero-pill-list">
+        <li><a href="pharm-search.html" class="pill pill-pink">Pharmacy Search</a></li>
+        <li><a href="about.html" class="pill pill-pink">About</a></li>
+        <li>
+          <a href="https://steelhacks.org/" target="_blank" class="pill pill-blue">SteelHacks XIII</a>
+        </li>
+      </ul>
+    </nav>
+
+    <section class="info-section">
+      <h2>A More Approachable Approach</h2>
+      <p>It doesn't matter the reason: sometimes transferring prescriptions sucks. We don't want to make phone calls, we don't want to have to find a place that accepts our insurance, or we're simply too overwhelmed to pick up another task. Prescription is a better, easier approach for anyone.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>With Accessibility in Mind</h2>
+      <p>If you have mobility, hearing, or sight impairments, there's more to consider about picking a pharmacy than just which one is the closest. If you have less common medications, it's good to get an idea of where might have them before having to do all of the research yourself. Maybe you're HoH and want to know if a pharmacist knows ASL or maybe you're an elder who isn't very confident using technology: this was made for you.</p>
+    </section>
+
+    <div id="loginModal">
+      <div class="modal-card">
+        <div class="modal-title">Log In</div>
+        <div class="modal-body">
+          <label>Username</label>
+          <input type="text" id="loginUsername">
+          <label>Password</label>
+          <input type="password" id="loginPassword">
+          <p id="loginError" class="login-error"></p>
+        </div>
+        <br />
+        <button class="pill modal-submit" onclick="handleLogin()">Log In</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const users = [
+      { id: "001", username: "mbrown", password: "steelhacks" },
+      { id: "002", username: "Oldie", password: "bones" },
+      { id: "003", username: "DebukinDonuts", password: "deb" },
+      { id: "004", username: "Dish", password: "hubby" },
+      { id: "005", username: "honeybee", password: "kentucky" },
+    ];
+
+    function handleLogin() {
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const errorEl = document.getElementById('loginError');
+
+      const match = users.find(u => u.username === username && u.password === password);
+
+      if (match) {
+        errorEl.textContent = '';
+        window.location.href = 'member-home.html';
+      } else {
+        errorEl.textContent = 'Incorrect username or password.';
+      }
+    }
+  </script>
+</body>
+</html>

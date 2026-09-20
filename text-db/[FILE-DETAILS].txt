@@ -1,0 +1,39 @@
+*************************
+==== preferences.txt ====
+*************************
+DESCRIPTION
+Primarily answered through signup, but can be altered from the account home page.
+--------------------------
+SYNTAX
+[UserID] [Current,Past Pharmacies] [In Network] [Walking Distance] [Within 5 miles] [Quick Service/Short Lines] [Polite Staff][Clean][Prescriptions in Stock][ASL interpreter/HoH friendly][Hard of Sight Friendly] [Accessible/Sufficient Parking Spaces]
+ [int]         [string,]              [bool]           [int]              [int]                 [int]                 [int]     [int]           [int]                        [int]                   [int]                           [int]
+--------------------------
+FILE READING
+generally, if a user has a positive preference then the int = 1 and is 0 otherwise. If a person picks two pharmacies in a row with the same positive traits
+
+
+*******************************
+==== prescription-info.txt ====
+*******************************
+DESCRIPTION
+prescription IDs are unique to each, structure is first two letters of prescription name and the number it was registered as
+--------------------------
+SYNTAX
+[user id] [script name] [prescription id] [prescription dose] [last refill date]
+  [int]     [string]         [int]             [string]           [DateTime]
+--------------------------
+FILE READING
+Read from first int line that is identified to share userid 
+
+
+**********************
+==== security.txt ====
+**********************
+DESCRIPTION
+
+--------------------------
+SYNTAX
+[UserID] [Username] [Password] [Name] [Phone Number] [E-mail] [Hardcoded Coordinates]
+ [int]    [string]   [string] [string]    [int]      [string]   [string],[string]
+--------------------------
+FILE READING

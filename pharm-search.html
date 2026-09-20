@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>Nearby Pharmacies</title>
+  <style>
+    html, body, arcgis-map { height: 100%; margin: 0; }
+  </style>
+  <script>
+    const esriConfig = { apiKey: "AAPTaqPm_JYFf_C4SOYe2J3HUAA..1IXJi-RFwDrPkX7AjP-gqOwMIhJXI4RpxEaB02F1qk01M93sXCTMygaAjZGW0lFZBu-Md_NZodFG6v3LW19ZHdDATcbwEOzIGKzNUHB3vqYHYHjdHrGt2tx0yYts7RI8V62Kxjo62fPt0KqnyGuKDsJ2MJqrDpJBhobbQ1pBV8P8ZIY29jkw4Z8G4AIG44lIAW8TXT1ENc7GarudWl78GeiuvyicTUq9ApRUg2DfP8FxM_I15Tft1sc0ie4mAd8.AT1_T9nQ8Sdj" };
+  </script>
+  <script type="module" src="https://js.arcgis.com/5.1/"></script>
+</head>
+<body>
+  <arcgis-map basemap="arcgis/navigation" center="-79.9959, 40.4406" zoom="13" id="map">
+    <arcgis-zoom slot="top-left"></arcgis-zoom>
+    <arcgis-locate slot="top-left"></arcgis-locate>
+  </arcgis-map>
+
+  <script type="module">
+    import Graphic from "https://js.arcgis.com/5.1/@arcgis/core/Graphic.js";
+    import CSVLayer from "https://js.arcgis.com/5.1/@arcgis/core/layers/CSVLayer.js";
+
+    const mapEl = document.getElementById("map");
+
+    mapEl.addEventListener("arcgisViewReadyChange", () => {
+      const pharmacyLayer = new CSVLayer({
+        url: "./pharmacies.csv",
+        latitudeField: "YCOORD",   // match your actual column name
+        longitudeField: "XCOORD",  // match your actual column name
+        popupTemplate: {
+          title: "{NAME}",
+          content: "{ADDRESS}, {CITY}, {STATE} {ZIPCODE}"
+        }
+      });
+      mapEl.map.add(pharmacyLayer);
+    });
+  </script>
+</body>
+</html>
